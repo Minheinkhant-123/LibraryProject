@@ -11,7 +11,7 @@ namespace LibraryProject.Data
         public DbSet<Genre> Genres => Set<Genre>();
         public DbSet<BookAuthor> BookAuthors => Set<BookAuthor>();
         public DbSet<BookGenre> BookGenres => Set<BookGenre>();
-
+        public DbSet<BookLoans> BookLoans { get; set; }
         public DbSet<Members> Members { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

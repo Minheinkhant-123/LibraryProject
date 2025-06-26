@@ -1,0 +1,30 @@
+﻿@model LibraryProject.Models.BookLoans
+
+@{
+    ViewData["Title"] = "Borrow Book";
+}
+
+<h2>Borrow Book</h2>
+
+<form asp-action="Create" method="post">
+    @Html.AntiForgeryToken()
+
+    <div class="mb-3">
+        <label>Member</label>
+        <select name="MemberId" asp-items="ViewBag.Members" class="form-control"></select>
+    </div>
+
+    <div class="mb-3">
+        <label>Book</label>
+        <select name="BookId" asp-items="ViewBag.Books" class="form-control"></select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Borrow</button>
+    <a asp-action="Index" class="btn btn-secondary">Back</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

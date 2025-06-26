@@ -1,0 +1,43 @@
+﻿@model List<LibraryProject.Models.BookLoans>
+
+@{
+    ViewData["Title"] = "Book Loans";
+}
+
+<h2>Book Loans</h2>
+
+<a asp-action="Create" class="btn btn-success mb-3">Borrow Book</a>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Member</th>
+            <th>Book</th>
+            <th>Loan Date</th>
+            <th>Due Date</th>
+            <th>Return Date</th>
+            <th>Late Fee</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var loan in Model)
+        {
+            <tr>
+                <td>@loan.Member.Name</td>
+                <td>@loan.Book.Title</td>
+                <td>@loan.LoanDate.ToShortDateString()</td>
+                <td>@loan.DueDate.ToShortDateString()</td>
+                <td>@(loan.ReturnDate?.ToShortDateString() ?? "-")</td>
+                <td>€@loan.LateFee.ToString("0.00")</td>
+                <td>
+                    @if (loan.ReturnDate == null)
+                    {
+                        <a asp-action="Return" asp-route-id="@loan.Id" class="btn btn-sm btn-warning">Return</a>
+                        <a asp-action="Extend" asp-route-id="@loan.Id" class="btn btn-sm btn-info">Extend</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
