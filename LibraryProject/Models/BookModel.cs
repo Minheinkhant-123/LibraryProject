@@ -7,7 +7,7 @@
         public string Title { get; set; }
         public int PublicationYear { get; set; }
         public string Publisher { get; set; }
-        public int CopiesAvailable { get; set; }
+        public int AvailableCopies { get; set; }
 
         public List<BookAuthor> BookAuthors { get; set; }
         public List<BookGenre> BookGenres { get; set; }

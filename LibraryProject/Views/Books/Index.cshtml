@@ -1,0 +1,37 @@
+﻿@model List<LibraryProject.Models.Book>
+
+<h2>Books</h2>
+
+<form method="get">
+    <input type="text" name="search" placeholder="Search by title, author, or genre" value="@(Context.Request.Query["search"])" />
+    <button type="submit">Search</button>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Authors</th>
+            <th>Genres</th>
+            <th>Copies</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var book in Model)
+        {
+            <tr>
+                <td>@book.Title</td>
+                <td>@string.Join(", ", book.BookAuthors.Select(ba => ba.Author.Name))</td>
+                <td>@string.Join(", ", book.BookGenres.Select(bg => bg.Genre.Name))</td>
+                <td>@book.AvailableCopies</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@book.Id">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@book.Id" onclick="return confirm('Delete this book?');">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Create" class="btn btn-primary">Add New Book</a>

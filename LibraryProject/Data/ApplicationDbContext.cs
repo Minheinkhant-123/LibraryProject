@@ -12,6 +12,8 @@ namespace LibraryProject.Data
         public DbSet<BookAuthor> BookAuthors => Set<BookAuthor>();
         public DbSet<BookGenre> BookGenres => Set<BookGenre>();
 
+        public DbSet<Members> Members { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<BookAuthor>().HasKey(ba => new { ba.BookId, ba.AuthorId });
