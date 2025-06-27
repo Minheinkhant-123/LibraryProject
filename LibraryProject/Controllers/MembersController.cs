@@ -85,16 +85,40 @@ public class MembersController : Controller
         if (string.IsNullOrWhiteSpace(member.Name))
             errors.Add("Name is required.");
 
-        if (string.IsNullOrWhiteSpace(member.Email) || !IsValidEmail(member.Email))
-            errors.Add("A valid Email is required.");
+        if (string.IsNullOrWhiteSpace(member.Email))
+            errors.Add("Email is required.");
+        else if (!IsValidEmail(member.Email))
+            errors.Add("Email format is invalid.");
 
         if (string.IsNullOrWhiteSpace(member.Phone))
             errors.Add("Phone is required.");
+        else if (!IsValidPhone(member.Phone))
+            errors.Add("Phone format is invalid.");
 
         if (string.IsNullOrWhiteSpace(member.Address))
             errors.Add("Address is required.");
 
-        // Add more validations as needed
+        if (member.RegistrationDate == default)
+            errors.Add("Registration date is required.");
+
+        bool IsValidEmail(string email)
+        {
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        bool IsValidPhone(string phone)
+        {
+            // Example simple validation - adjust as needed
+            return System.Text.RegularExpressions.Regex.IsMatch(phone, @"^\+?\d{7,15}$");
+        }
 
         return errors;
     }
