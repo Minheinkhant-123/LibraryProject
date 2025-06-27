@@ -25,12 +25,13 @@ public class MemberService : IMemberService
         return await _context.Members.FindAsync(id);
     }
 
-    public async Task CreateAsync(Members member)
+    public async Task<bool> CreateAsync(Members member)
     {
         member.RegistrationDate = DateTime.Now;
         member.Status = MemberStatus.Active;
         _context.Members.Add(member);
         await _context.SaveChangesAsync();
+        return true;
     }
 
     public async Task<bool> UpdateAsync(Members member)

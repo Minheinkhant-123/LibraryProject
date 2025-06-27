@@ -6,7 +6,7 @@ namespace LibraryProject.Core.Interfaces
     {
         Task<List<Members>> GetAllAsync();
         Task<Members?> GetByIdAsync(int id);
-        Task CreateAsync(Members member);
+        Task<bool> CreateAsync(Members member);
         Task<bool> UpdateAsync(Members member);
         Task<(bool Success, string? ErrorMessage)> DeleteAsync(int id);
     }

@@ -35,7 +35,7 @@ namespace LibraryProject.Infrastructure.Services
         }
 
 
-        public async Task CreateAsync(Book book, List<int> authorIds, List<int> genreIds)
+        public async Task<bool> CreateAsync(Book book, List<int> authorIds, List<int> genreIds)
         {
             book.BookAuthors = authorIds
                 .Select(authorId => new BookAuthor { AuthorId = authorId })
@@ -47,6 +47,7 @@ namespace LibraryProject.Infrastructure.Services
 
             _context.Books.Add(book);
             await _context.SaveChangesAsync();
+            return true;
         }
 
         public async Task<bool> UpdateAsync(Book updatedBook, List<int> authorIds, List<int> genreIds)
