@@ -5,14 +5,15 @@ namespace LibraryProject.Models
 {
     public enum MemberStatus
     {
-        Active,
-        Suspended,
-        Expired
+        Active = 1,
+        Suspended = 2,
+        Expired = 3,
+        Deleted = 0
     }
 
     public class Members
     {
-        public int Id { get; set; } // Auto-generated
+        public int Id { get; set; }
 
         [Required]
         public string Name { get; set; }

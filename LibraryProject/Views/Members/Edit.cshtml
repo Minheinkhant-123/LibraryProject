@@ -7,38 +7,39 @@
 <h2>Edit Member</h2>
 
 <form asp-action="Edit" method="post">
-    @Html.AntiForgeryToken()
     <input type="hidden" asp-for="Id" />
 
-    <div class="mb-3">
+    <div class="form-group mb-3">
         <label asp-for="Name"></label>
         <input asp-for="Name" class="form-control" />
         <span asp-validation-for="Name" class="text-danger"></span>
     </div>
 
-    <div class="mb-3">
+    <div class="form-group mb-3">
         <label asp-for="Email"></label>
         <input asp-for="Email" class="form-control" />
         <span asp-validation-for="Email" class="text-danger"></span>
     </div>
 
-    <div class="mb-3">
+    <div class="form-group mb-3">
         <label asp-for="Phone"></label>
         <input asp-for="Phone" class="form-control" />
         <span asp-validation-for="Phone" class="text-danger"></span>
     </div>
 
-    <div class="mb-3">
+    <div class="form-group mb-3">
         <label asp-for="Address"></label>
         <input asp-for="Address" class="form-control" />
+        <span asp-validation-for="Address" class="text-danger"></span>
     </div>
 
-    <div class="mb-3">
+    <div class="form-group mb-3">
         <label asp-for="RegistrationDate"></label>
-        <input asp-for="RegistrationDate" class="form-control" readonly />
+        <input asp-for="RegistrationDate" class="form-control" type="date" />
+        <span asp-validation-for="RegistrationDate" class="text-danger"></span>
     </div>
 
-    <div class="mb-3">
+    <div class="form-group mb-3">
         <label asp-for="Status"></label>
         <select asp-for="Status" class="form-control" asp-items="Html.GetEnumSelectList<LibraryProject.Models.MemberStatus>()"></select>
         <span asp-validation-for="Status" class="text-danger"></span>

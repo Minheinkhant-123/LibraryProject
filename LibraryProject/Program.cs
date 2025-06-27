@@ -1,4 +1,6 @@
-using LibraryProject.Data;
+using LibraryProject.Core.Interfaces;
+using LibraryProject.Infrastructure.Data;
+using LibraryProject.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +10,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IBookService, BookService>();
+builder.Services.AddScoped<IMemberService, MemberService>();
+builder.Services.AddScoped<IBookLoanService, BookLoanService>();
 
 var app = builder.Build();
 

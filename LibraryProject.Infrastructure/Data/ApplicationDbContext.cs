@@ -1,6 +1,6 @@
 ﻿using LibraryProject.Models;
 using Microsoft.EntityFrameworkCore;
-namespace LibraryProject.Data
+namespace LibraryProject.Infrastructure.Data
 {
     public class ApplicationDbContext : DbContext
     {

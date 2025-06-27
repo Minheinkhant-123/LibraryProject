@@ -1,12 +1,8 @@
 ﻿@model List<LibraryProject.Models.Members>
 
-@{
-    ViewData["Title"] = "Members";
-}
-
 <h2>Members</h2>
 
-<a asp-action="Create" class="btn btn-success mb-3">Add New Member</a>
+<a asp-action="Create" class="btn btn-primary mb-3">Add New Member</a>
 
 <table class="table table-bordered">
     <thead>
@@ -14,9 +10,8 @@
             <th>Name</th>
             <th>Email</th>
             <th>Phone</th>
-            <th>Status</th>
-            <th>Registered</th>
-            <th>Actions</th>
+            <th>Address</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -26,11 +21,10 @@
                 <td>@m.Name</td>
                 <td>@m.Email</td>
                 <td>@m.Phone</td>
-                <td>@m.Status</td>
-                <td>@m.RegistrationDate.ToShortDateString()</td>
+                <td>@m.Address</td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@m.Id">Edit</a> |
-                    <a asp-action="Delete" asp-route-id="@m.Id" onclick="return confirm('Delete this member?')">Delete</a>
+                    <a asp-action="Delete" asp-route-id="@m.Id">Delete</a>
                 </td>
             </tr>
         }

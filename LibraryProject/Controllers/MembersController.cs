@@ -1,20 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using LibraryProject.Data;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using LibraryProject.Models;
+using LibraryProject.Core.Interfaces;
 
 public class MembersController : Controller
 {
-    private readonly ApplicationDbContext _context;
+    private readonly IMemberService _memberService;
 
-    public MembersController(ApplicationDbContext context)
+    public MembersController(IMemberService memberService)
     {
-        _context = context;
+        _memberService = memberService;
     }
 
     public async Task<IActionResult> Index()
     {
-        var members = await _context.Members.ToListAsync();
+        var members = await _memberService.GetAllAsync();
         return View(members);
     }
 
@@ -26,39 +27,88 @@ public class MembersController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(Members member)
     {
-        if (!ModelState.IsValid) return View(member);
+        var errors = ValidateMember(member);
+        if (errors.Count > 0)
+        {
+            ViewBag.Errors = errors;
+            return View(member);
+        }
 
-        _context.Add(member);
-        await _context.SaveChangesAsync();
+        await _memberService.CreateAsync(member);
         return RedirectToAction(nameof(Index));
     }
 
     public async Task<IActionResult> Edit(int id)
     {
-        var member = await _context.Members.FindAsync(id);
-        if (member == null) return NotFound();
-
+        var member = await _memberService.GetByIdAsync(id);
+        if (member == null)
+            return NotFound();
         return View(member);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Edit(int id, Members member)
+    public async Task<IActionResult> Edit(Members member)
     {
-        if (id != member.Id) return NotFound();
-        if (!ModelState.IsValid) return View(member);
+        var errors = ValidateMember(member);
+        if (errors.Count > 0)
+        {
+            ViewBag.Errors = errors;
+            return View(member);
+        }
 
-        _context.Update(member);
-        await _context.SaveChangesAsync();
+        var updated = await _memberService.UpdateAsync(member);
+        if (!updated)
+            return NotFound();
+
         return RedirectToAction(nameof(Index));
     }
 
     public async Task<IActionResult> Delete(int id)
     {
-        var member = await _context.Members.FindAsync(id);
-        if (member == null) return NotFound();
+        var member = await _memberService.GetByIdAsync(id);
+        if (member == null)
+            return NotFound();
+        return View(member);
+    }
 
-        _context.Members.Remove(member);
-        await _context.SaveChangesAsync();
+    [HttpPost, ActionName("Delete")]
+    public async Task<IActionResult> DeleteConfirmed(int id)
+    {
+        await _memberService.DeleteAsync(id);
         return RedirectToAction(nameof(Index));
+    }
+
+    private List<string> ValidateMember(Members member)
+    {
+        var errors = new List<string>();
+
+        if (string.IsNullOrWhiteSpace(member.Name))
+            errors.Add("Name is required.");
+
+        if (string.IsNullOrWhiteSpace(member.Email) || !IsValidEmail(member.Email))
+            errors.Add("A valid Email is required.");
+
+        if (string.IsNullOrWhiteSpace(member.Phone))
+            errors.Add("Phone is required.");
+
+        if (string.IsNullOrWhiteSpace(member.Address))
+            errors.Add("Address is required.");
+
+        // Add more validations as needed
+
+        return errors;
+    }
+
+    private bool IsValidEmail(string email)
+    {
+        try
+        {
+            var addr = new System.Net.Mail.MailAddress(email);
+            return addr.Address == email;
+        }
+        catch
+        {
+            return false;
+        }
     }
 }

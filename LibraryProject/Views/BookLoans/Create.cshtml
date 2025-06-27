@@ -1,30 +1,36 @@
-﻿@model LibraryProject.Models.BookLoans
-
-@{
-    ViewData["Title"] = "Borrow Book";
+﻿@{
+    ViewData["Title"] = "Create Loan";
 }
 
-<h2>Borrow Book</h2>
+<h2>Create Book Loan</h2>
 
-<form asp-action="Create" method="post">
-    @Html.AntiForgeryToken()
+@if (ViewBag.Errors != null)
+{
+    <div class="alert alert-danger">
+        <ul>
+            @foreach (string err in ViewBag.Errors)
+            {
+                <li>@err</li>
+            }
+        </ul>
+    </div>
+}
 
-    <div class="mb-3">
+<form method="post" asp-action="Create">
+    <div class="form-group mb-3">
         <label>Member</label>
-        <select name="MemberId" asp-items="ViewBag.Members" class="form-control"></select>
+        <select asp-items="ViewBag.Members" name="memberId" class="form-control">
+            <option value="">-- Select Member --</option>
+        </select>
     </div>
 
-    <div class="mb-3">
+    <div class="form-group mb-3">
         <label>Book</label>
-        <select name="BookId" asp-items="ViewBag.Books" class="form-control"></select>
+        <select asp-items="ViewBag.Books" name="bookId" class="form-control">
+            <option value="">-- Select Book --</option>
+        </select>
     </div>
 
-    <button type="submit" class="btn btn-primary">Borrow</button>
-    <a asp-action="Index" class="btn btn-secondary">Back</a>
+    <button type="submit" class="btn btn-primary">Create</button>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
 </form>
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}

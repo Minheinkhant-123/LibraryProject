@@ -1,0 +1,24 @@
+﻿@model LibraryProject.Models.Members
+
+@{
+    ViewData["Title"] = "Delete Member";
+}
+
+<h2>Delete Member</h2>
+
+<h4>Are you sure you want to delete this member?</h4>
+
+<div>
+    <h5>@Model.Name</h5>
+    <p><strong>Email:</strong> @Model.Email</p>
+    <p><strong>Phone:</strong> @Model.Phone</p>
+    <p><strong>Address:</strong> @Model.Address</p>
+    <p><strong>Registration Date:</strong> @Model.RegistrationDate.ToShortDateString()</p>
+    <p><strong>Status:</strong> @Model.Status.ToString()</p>
+</div>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

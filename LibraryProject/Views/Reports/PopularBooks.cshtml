@@ -1,11 +1,12 @@
-﻿@model IEnumerable<dynamic>
+﻿@model List<PopularBookViewModel>
 
-<h2>Popular Books (Most Borrowed)</h2>
+<h2>Top 10 Popular Books</h2>
 
 <table class="table table-striped">
     <thead>
         <tr>
             <th>Title</th>
+            <th>Author(s)</th>
             <th>Times Borrowed</th>
         </tr>
     </thead>
@@ -14,7 +15,8 @@
         {
             <tr>
                 <td>@item.Book.Title</td>
-                <td>@item.Count</td>
+                <td>@string.Join(", ", item.Book.BookAuthors.Select(ba => ba.Author.Name))</td>
+                <td>@item.TimesBorrowed</td>
             </tr>
         }
     </tbody>

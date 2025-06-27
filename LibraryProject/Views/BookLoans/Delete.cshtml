@@ -1,0 +1,23 @@
+﻿@model LibraryProject.Models.BookLoans
+
+@{
+    ViewData["Title"] = "Delete Book Loan";
+}
+
+<h2>Delete Book Loan</h2>
+
+<h4>Are you sure you want to delete this book loan record?</h4>
+
+<div>
+    <p><strong>Book:</strong> @Model.Book.Title</p>
+    <p><strong>Member:</strong> @Model.Member.Name</p>
+    <p><strong>Loan Date:</strong> @Model.LoanDate.ToShortDateString()</p>
+    <p><strong>Due Date:</strong> @Model.DueDate.ToShortDateString()</p>
+    <p><strong>Return Date:</strong> @(Model.ReturnDate.HasValue ? Model.ReturnDate.Value.ToShortDateString() : "Not returned")</p>
+</div>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
