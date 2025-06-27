@@ -1,0 +1,25 @@
+﻿@model IEnumerable<LibraryProject.Models.BookLoans>
+
+<h2>Books Currently on Loan</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Book</th>
+            <th>Member</th>
+            <th>Loan Date</th>
+            <th>Due Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var loan in Model)
+        {
+            <tr>
+                <td>@loan.Book.Title</td>
+                <td>@loan.Member.Name</td>
+                <td>@loan.LoanDate.ToShortDateString()</td>
+                <td>@loan.DueDate.ToShortDateString()</td>
+            </tr>
+        }
+    </tbody>
+</table>
