@@ -8,7 +8,7 @@
         public int PublicationYear { get; set; }
         public string Publisher { get; set; }
         public int AvailableCopies { get; set; }
-
+        public int Status { get; set; } = 1;
         public List<BookAuthor> BookAuthors { get; set; }
         public List<BookGenre> BookGenres { get; set; }
     }

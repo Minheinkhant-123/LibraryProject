@@ -1,12 +1,13 @@
-﻿@model IEnumerable<LibraryProject.Models.BookLoans>
+﻿@model List<LibraryProject.Models.BookLoans>
 
-<h2>Books Currently on Loan</h2>
+<h2>Books Currently On Loan</h2>
 
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
-            <th>Book</th>
-            <th>Member</th>
+            <th>Book Title</th>
+            <th>Author(s)</th>
+            <th>Member Name</th>
             <th>Loan Date</th>
             <th>Due Date</th>
         </tr>
@@ -16,6 +17,7 @@
         {
             <tr>
                 <td>@loan.Book.Title</td>
+                <td>@string.Join(", ", loan.Book.BookAuthors.Select(ba => ba.Author.Name))</td>
                 <td>@loan.Member.Name</td>
                 <td>@loan.LoanDate.ToShortDateString()</td>
                 <td>@loan.DueDate.ToShortDateString()</td>

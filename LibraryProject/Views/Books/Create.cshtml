@@ -1,58 +1,59 @@
 ﻿@model LibraryProject.Models.Book
-
 @{
     ViewData["Title"] = "Create Book";
+    var errors = TempData["Errors"] as List<string> ?? new List<string>();
 }
 
 <h2>Create Book</h2>
+
+@if (errors.Any())
+{
+    <div class="alert alert-danger">
+        <ul>
+            @foreach (var error in errors)
+            {
+                <li>@error</li>
+            }
+        </ul>
+    </div>
+}
 
 <form asp-action="Create" method="post">
     <div class="form-group mb-3">
         <label asp-for="ISBN"></label>
         <input asp-for="ISBN" class="form-control" />
-        <span asp-validation-for="ISBN" class="text-danger"></span>
     </div>
 
     <div class="form-group mb-3">
         <label asp-for="Title"></label>
         <input asp-for="Title" class="form-control" />
-        <span asp-validation-for="Title" class="text-danger"></span>
     </div>
 
     <div class="form-group mb-3">
         <label asp-for="PublicationYear"></label>
-        <input asp-for="PublicationYear" class="form-control" type="number" />
-        <span asp-validation-for="PublicationYear" class="text-danger"></span>
+        <input asp-for="PublicationYear" type="number" class="form-control" />
     </div>
 
     <div class="form-group mb-3">
         <label asp-for="Publisher"></label>
         <input asp-for="Publisher" class="form-control" />
-        <span asp-validation-for="Publisher" class="text-danger"></span>
     </div>
 
     <div class="form-group mb-3">
         <label asp-for="AvailableCopies"></label>
-        <input asp-for="AvailableCopies" class="form-control" type="number" />
-        <span asp-validation-for="AvailableCopies" class="text-danger"></span>
+        <input asp-for="AvailableCopies" type="number" class="form-control" />
     </div>
 
     <div class="form-group mb-3">
         <label>Authors</label>
-        <select asp-items="ViewBag.Authors" name="authorIds" multiple class="form-control"></select>
+        <select name="authorIds" multiple class="form-control" asp-items="ViewBag.Authors"></select>
     </div>
 
     <div class="form-group mb-3">
         <label>Genres</label>
-        <select asp-items="ViewBag.Genres" name="genreIds" multiple class="form-control"></select>
+        <select name="genreIds" multiple class="form-control" asp-items="ViewBag.Genres"></select>
     </div>
 
     <button type="submit" class="btn btn-primary">Create</button>
     <a asp-action="Index" class="btn btn-secondary">Back to List</a>
 </form>
-@Html.AntiForgeryToken()
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}

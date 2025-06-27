@@ -1,14 +1,16 @@
 ﻿@model List<LibraryProject.Models.BookLoans>
-
 @{
-    ViewData["Title"] = "Book Loans";
+    Func<LibraryProject.Models.BookLoans, decimal> CalculateLateFee = ViewBag.CalculateLateFee;
 }
 
 <h2>Book Loans</h2>
 
-<a asp-action="Create" class="btn btn-success mb-3">Borrow Book</a>
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
 
-<table class="table table-bordered">
+<table class="table table-bordered table-striped">
     <thead>
         <tr>
             <th>Member</th>
@@ -16,28 +18,32 @@
             <th>Loan Date</th>
             <th>Due Date</th>
             <th>Return Date</th>
-            <th>Late Fee</th>
+            <th>Late Fee (€)</th>
             <th>Actions</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var loan in Model)
         {
+            var lateFee = loan.ReturnDate != null ? CalculateLateFee(loan) : 0m;
             <tr>
                 <td>@loan.Member.Name</td>
                 <td>@loan.Book.Title</td>
                 <td>@loan.LoanDate.ToShortDateString()</td>
                 <td>@loan.DueDate.ToShortDateString()</td>
                 <td>@(loan.ReturnDate?.ToShortDateString() ?? "-")</td>
-                <td>€@loan.LateFee.ToString("0.00")</td>
+                <td>@lateFee.ToString("F2")</td>
                 <td>
+                    <a asp-action="Edit" asp-route-id="@loan.Id">Edit</a> |
                     @if (loan.ReturnDate == null)
                     {
-                        <a asp-action="Return" asp-route-id="@loan.Id" class="btn btn-sm btn-warning">Return</a>
-                        <a asp-action="Extend" asp-route-id="@loan.Id" class="btn btn-sm btn-info">Extend</a>
+                        <a asp-action="Return" asp-route-id="@loan.Id">Return</a>
+                        <a asp-action="Extend" asp-route-id="@loan.Id">Extend</a>
                     }
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+<a asp-action="Create" class="btn btn-primary">Add New Loan</a>

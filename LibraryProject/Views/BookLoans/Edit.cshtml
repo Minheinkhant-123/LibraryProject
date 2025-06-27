@@ -1,0 +1,47 @@
+﻿@model LibraryProject.Models.BookLoans
+
+<h2>Edit Loan</h2>
+
+@if (ViewBag.Errors != null)
+{
+    <div class="alert alert-danger">
+        <ul>
+            @foreach (string err in ViewBag.Errors)
+            {
+                <li>@err</li>
+            }
+        </ul>
+    </div>
+}
+
+<form method="post" asp-action="Edit">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group mb-3">
+        <label>Member</label>
+        <select asp-items="ViewBag.Members" asp-for="MemberId" class="form-control"></select>
+    </div>
+
+    <div class="form-group mb-3">
+        <label>Book</label>
+        <select asp-items="ViewBag.Books" asp-for="BookId" class="form-control"></select>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="LoanDate"></label>
+        <input asp-for="LoanDate" class="form-control" type="date" />
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="DueDate"></label>
+        <input asp-for="DueDate" class="form-control" type="date" />
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="ReturnDate"></label>
+        <input asp-for="ReturnDate" class="form-control" type="date" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

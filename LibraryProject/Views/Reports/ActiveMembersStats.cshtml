@@ -1,0 +1,22 @@
+﻿@model MemberStatsViewModel
+
+<h2>Active Members Statistics</h2>
+
+<table class="table table-bordered">
+    <tr>
+        <th>Total Members</th>
+        <td>@Model.TotalMembers</td>
+    </tr>
+    <tr>
+        <th>Active Members</th>
+        <td>@Model.ActiveMembers</td>
+    </tr>
+    <tr>
+        <th>Suspended Members</th>
+        <td>@Model.SuspendedMembers</td>
+    </tr>
+    <tr>
+        <th>Expired Members</th>
+        <td>@Model.ExpiredMembers</td>
+    </tr>
+</table>

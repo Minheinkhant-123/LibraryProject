@@ -1,75 +1,63 @@
-﻿using LibraryProject.Data;
+﻿using LibraryProject.Core.Interfaces;
+using LibraryProject.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
-namespace LibraryProject.Controllers
+public class ReportsController : Controller
 {
-    public class ReportsController : Controller
+    private readonly IBookLoanService _bookLoanService;
+    private readonly IMemberService _memberService;
+
+    public ReportsController(
+        IBookLoanService bookLoanService,
+        IMemberService memberService)
     {
-        private readonly ApplicationDbContext _context;
+        _bookLoanService = bookLoanService;
+        _memberService = memberService;
+    }
 
-        public ReportsController(ApplicationDbContext context)
+    public async Task<IActionResult> BooksCurrentlyOnLoan()
+    {
+        var loans = await _bookLoanService.GetAllWithDetailsAsync();
+        var BooksCurrentlyOnLoan = loans.Where(l => l.ReturnDate == null).ToList();
+        return View(BooksCurrentlyOnLoan);
+    }
+
+    public async Task<IActionResult> OverdueBooks()
+    {
+        var loans = await _bookLoanService.GetAllWithDetailsAsync();
+        var overdue = loans.Where(l => l.ReturnDate == null && l.DueDate < DateTime.Now).ToList();
+        return View(overdue);
+    }
+
+    public async Task<IActionResult> PopularBooks()
+    {
+        var loans = await _bookLoanService.GetAllWithDetailsAsync();
+        var popularBooks = loans
+            .GroupBy(l => l.BookId)
+            .Select(g => new PopularBookViewModel
+            {
+                Book = g.First().Book,
+                TimesBorrowed = g.Count()
+            })
+            .OrderByDescending(x => x.TimesBorrowed)
+            .Take(10)
+            .ToList();
+
+        return View(popularBooks);
+    }
+
+    public async Task<IActionResult> ActiveMembersStats()
+    {
+        var members = await _memberService.GetAllAsync();
+
+        var stats = new MemberStatsViewModel
         {
-            _context = context;
-        }
+            TotalMembers = members.Count,
+            ActiveMembers = members.Count(m => m.Status == MemberStatus.Active),
+            SuspendedMembers = members.Count(m => m.Status == MemberStatus.Suspended),
+            ExpiredMembers = members.Count(m => m.Status == MemberStatus.Expired)
+        };
 
-        // ✅ 1. Books currently on loan
-        public async Task<IActionResult> CurrentLoans()
-        {
-            var loans = await _context.BookLoans
-                .Where(l => l.ReturnDate == null)
-                .Include(l => l.Book)
-                .Include(l => l.Member)
-                .ToListAsync();
-
-            return View(loans);
-        }
-
-        // ✅ 2. Overdue books
-        public async Task<IActionResult> OverdueBooks()
-        {
-            var today = DateTime.Now;
-            var overdue = await _context.BookLoans
-                .Where(l => l.ReturnDate == null && l.DueDate < today)
-                .Include(l => l.Book)
-                .Include(l => l.Member)
-                .ToListAsync();
-
-            return View(overdue);
-        }
-
-        // ✅ 3. Popular books
-        public async Task<IActionResult> PopularBooks()
-        {
-            var popular = await _context.BookLoans
-                .GroupBy(l => l.BookId)
-                .Select(g => new
-                {
-                    BookId = g.Key,
-                    Count = g.Count(),
-                    Book = g.First().Book
-                })
-                .OrderByDescending(g => g.Count)
-                .Take(10)
-                .ToListAsync();
-
-            return View(popular);
-        }
-
-        // ✅ 4. Active members statistics
-        public async Task<IActionResult> ActiveMembers()
-        {
-            var members = await _context.Members
-                .Where(m => m.Status == Models.MemberStatus.Active)
-                .Select(m => new
-                {
-                    Member = m,
-                    TotalLoans = _context.BookLoans.Count(l => l.MemberId == m.Id)
-                })
-                .OrderByDescending(m => m.TotalLoans)
-                .ToListAsync();
-
-            return View(members);
-        }
+        return View(stats);
     }
 }

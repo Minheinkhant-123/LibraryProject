@@ -28,14 +28,14 @@
                         <a class="nav-link" asp-controller="BookLoans" asp-action="Index">Book Loans</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="reportsDropdown" role="button" data-bs-toggle="dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="reportsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Reports
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="reportsDropdown">
-                            <li><a class="dropdown-item" asp-controller="Reports" asp-action="CurrentLoans">Current Loans</a></li>
+                            <li><a class="dropdown-item" asp-controller="Reports" asp-action="BooksCurrentlyOnLoan">Current Loans</a></li>
                             <li><a class="dropdown-item" asp-controller="Reports" asp-action="OverdueBooks">Overdue Books</a></li>
                             <li><a class="dropdown-item" asp-controller="Reports" asp-action="PopularBooks">Popular Books</a></li>
-                            <li><a class="dropdown-item" asp-controller="Reports" asp-action="ActiveMembers">Active Members</a></li>
+                            <li><a class="dropdown-item" asp-controller="Reports" asp-action="ActiveMembersStats">Active Members</a></li>
                         </ul>
                     </li>
                 </ul>

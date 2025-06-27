@@ -1,0 +1,23 @@
+﻿@model LibraryProject.Models.Book
+
+@{
+    ViewData["Title"] = "Delete Book";
+}
+
+<h2>Delete Book</h2>
+
+<h4>Are you sure you want to delete this book?</h4>
+
+<div>
+    <h5>@Model.Title</h5>
+    <p><strong>ISBN:</strong> @Model.ISBN</p>
+    <p><strong>Authors:</strong> @string.Join(", ", Model.BookAuthors.Select(ba => ba.Author.Name))</p>
+    <p><strong>Genres:</strong> @string.Join(", ", Model.BookGenres.Select(bg => bg.Genre.Name))</p>
+    <p><strong>Copies Available:</strong> @Model.AvailableCopies</p>
+</div>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
