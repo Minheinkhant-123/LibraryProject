@@ -1,0 +1,23 @@
+﻿@model IEnumerable<dynamic>
+
+<h2>Active Members Statistics</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Member</th>
+            <th>Email</th>
+            <th>Total Loans</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Member.Name</td>
+                <td>@item.Member.Email</td>
+                <td>@item.TotalLoans</td>
+            </tr>
+        }
+    </tbody>
+</table>

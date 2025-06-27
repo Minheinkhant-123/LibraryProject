@@ -1,0 +1,21 @@
+﻿@model IEnumerable<dynamic>
+
+<h2>Popular Books (Most Borrowed)</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Times Borrowed</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Book.Title</td>
+                <td>@item.Count</td>
+            </tr>
+        }
+    </tbody>
+</table>
